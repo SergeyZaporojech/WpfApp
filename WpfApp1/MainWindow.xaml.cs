@@ -1,9 +1,13 @@
-﻿using LibData;
+﻿using Bogus;
+using LibData;
+using LibData.Delegates;
+using LibData.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace WpfApp1
 {
@@ -22,12 +27,43 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        public  event ConnectionCompleteDelegate _connectionComplete;
+        private MyDataContext _myDataContext;
+        private CancellationTokenSource ctSourse;
+        private CancellationToken token;
+        private static ManualResetEvent _mre = new ManualResetEvent(false);
+        private bool _isPause = false;
+
+
+        class MyImage
+        {
+            public string Name { get; set; }
+        }
         public MainWindow()
         {
             InitializeComponent();
+            _connectionComplete += MainWindow__connectionComplete;
+            Thread thread = new Thread(ConnectionDatabase);
+            thread.Start();
+
+            var faker = new Faker<MyImage>()
+            .RuleFor(u => u.Name,f=>f.Image.LoremFlickrUrl());
+            var img = faker.Generate();
+        }
+        private void ConnectionDatabase()
+        {
+            MyDataContext myDataContext = new MyDataContext();
+            _connectionComplete?.Invoke(myDataContext);
         }
 
-
+        private void MainWindow__connectionComplete(MyDataContext context)
+        {
+            _myDataContext = context;
+            Dispatcher.Invoke(() =>
+            {
+                lblStatusBar.Content = "Підключення успішно виконане";
+            });
+        }
 
         private void mFileExit_Click(object sender, RoutedEventArgs e)
         {
@@ -47,25 +83,72 @@ namespace WpfApp1
             window.ShowDialog();
         }
 
-        private void btnConnetion_Click(object sender, RoutedEventArgs e)
+        private void btnAddUsers_Click(object sender, RoutedEventArgs e)
         {
-            using (MyDataContext context = new MyDataContext())
+            int count = int.Parse(txtCount.Text);
+            pbCount.Minimum = 0;
+            pbCount.Maximum = count;
+            ctSourse= new CancellationTokenSource();
+            token = ctSourse.Token;
+
+            Task thread = new Task(()=>AddUsers(count),token);
+            thread.Start();
+
+            _mre.Set();
+           
+        }
+        private void AddUsers(object count)
+        {
+            int countAdd = (int)(count);
+            for (int i = 0; i < countAdd; i++)
             {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
+               _myDataContext.Users.Add(new UserEntitie
+                {
+                    Name = "Іван",
+                    Phone = "097 56 56 765",
+                    Password = "123456"
+                });
+                _myDataContext.SaveChanges();
+                Dispatcher.Invoke(() =>
+                {
+                    pbCount.Value=i;
+                    lblStatusBar.Content = $"{i+1}/{count}";
+                });
 
-                btnConnetion.Content += " - " + context.Users.Count().ToString();
-                //MessageBox.Show(context.Users.Count().ToString());
+                _mre.WaitOne(Timeout.Infinite);
 
-                // Get the elapsed time as a TimeSpan value.
-                TimeSpan ts = stopWatch.Elapsed;
 
-                // Format and display the TimeSpan value.
-                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                  ts.Hours, ts.Minutes, ts.Seconds,
-                  ts.Milliseconds / 10);
-                MessageBox.Show("RunTime " + elapsedTime);
+
+                if (token.IsCancellationRequested)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        pbCount.Value = 0;
+                        lblStatusBar.Content += $"  Add cansel";
+                });
+                    return;
+                }
             }
+        }
+
+        private void bntCansel_Click(object sender, RoutedEventArgs e)
+        {
+            ctSourse.Cancel();
+        }
+
+        private void bntPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isPause)   //якщо потік був задлчений
+            {
+                _mre.Set();
+                bntPause.Content = "Pause";
+            }
+            else {
+                _mre.Reset();// лочимо потік
+                bntPause.Content = "Відновити";
+
+            }
+            _isPause = !_isPause;
         }
     }
 }

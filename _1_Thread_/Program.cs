@@ -1,9 +1,11 @@
 ﻿using LibData;
+using LibData.Delegates;
+using LibData.Entities;
 using System.Diagnostics;
 
 namespace _1_Thread
 {
-    public delegate void ConnectionCompleteDelegate(MyDataContext context);
+    //public delegate void ConnectionCompleteDelegate(MyDataContext context);
     internal class Program
     {
 
@@ -14,8 +16,7 @@ namespace _1_Thread
             _connectionComplete += Program__onnectionComplete;
             var idThread = Thread.CurrentThread.ManagedThreadId;
             Console.WriteLine("Main thread: {0}", idThread);
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
+
 
             //Thread queue = new Thread(Queue);
             //queue.Start();
@@ -28,21 +29,37 @@ namespace _1_Thread
             //var countUsers = myDataContext.Users.Count();
             
 
-            stopWatch.Stop();
-            // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = stopWatch.Elapsed;
-
-        // Format and display the TimeSpan value.
-        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-            ts.Hours, ts.Minutes, ts.Seconds,
-            ts.Milliseconds / 10);
-        Console.WriteLine("RunTime " + elapsedTime);
 
         }
 
         private static void Program__onnectionComplete(MyDataContext context)
         {
+
             Console.WriteLine("Even completed connection {0}", Thread.CurrentThread.ManagedThreadId);
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                context.Users.Add(new UserEntitie
+                {
+                    Name = "Іван",
+                    Phone = "097 56 56 765",
+                    Password = "123456"
+                });
+                context.SaveChanges();
+                ShowMessenge($"Insert usrer {i}", ConsoleColor.Yellow);
+            }
+
+
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         private static void ConnectionDatabase()
