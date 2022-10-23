@@ -26,8 +26,7 @@ namespace _1_Thread
 
             Thread connect = new Thread(ConnectionDatabase);
             connect.Start();
-            //var countUsers = myDataContext.Users.Count();
-            
+            //var countUsers = myDataContext.Users.Count();            
 
 
         }
@@ -79,8 +78,6 @@ namespace _1_Thread
             Console.WriteLine(text);
             Console.ForegroundColor = comsoleColor;
         }
-
-
 
 
         private static void SendMessendg()

@@ -1,0 +1,3 @@
+{
+  "ConnectionBD":   "Server=localhost; Port=5432;  Database=consoldata; User Id=postgres; Password=123456;"
+}

@@ -27,13 +27,12 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        public  event ConnectionCompleteDelegate _connectionComplete;
+        public event ConnectionCompleteDelegate _connectionComplete;
         private MyDataContext _myDataContext;
         private CancellationTokenSource ctSourse;
         private CancellationToken token;
         private static ManualResetEvent _mre = new ManualResetEvent(false);
         private bool _isPause = false;
-
 
         class MyImage
         {
@@ -47,7 +46,7 @@ namespace WpfApp1
             thread.Start();
 
             var faker = new Faker<MyImage>()
-            .RuleFor(u => u.Name,f=>f.Image.LoremFlickrUrl());
+            .RuleFor(u => u.Name, f => f.Image.LoremFlickrUrl());
             var img = faker.Generate();
         }
         private void ConnectionDatabase()
@@ -61,7 +60,7 @@ namespace WpfApp1
             _myDataContext = context;
             Dispatcher.Invoke(() =>
             {
-                lblStatusBar.Content = "Підключення успішно виконане";
+                lblStatusBar.Content = "Connection successfully completed";
             });
         }
 
@@ -94,8 +93,7 @@ namespace WpfApp1
             Task thread = new Task(()=>AddUsers(count),token);
             thread.Start();
 
-            _mre.Set();
-           
+            _mre.Set();           
         }
         private void AddUsers(object count)
         {
@@ -106,7 +104,8 @@ namespace WpfApp1
                 {
                     Name = "Іван",
                     Phone = "097 56 56 765",
-                    Password = "123456"
+                    Password = "123456",
+                    DateCreated = DateTime.SpecifyKind(DateTime.Now,DateTimeKind.Utc),
                 });
                 _myDataContext.SaveChanges();
                 Dispatcher.Invoke(() =>
@@ -118,14 +117,13 @@ namespace WpfApp1
                 _mre.WaitOne(Timeout.Infinite);
 
 
-
                 if (token.IsCancellationRequested)
                 {
                     Dispatcher.Invoke(() =>
                     {
                         pbCount.Value = 0;
                         lblStatusBar.Content += $"  Add cansel";
-                });
+                    });
                     return;
                 }
             }
@@ -143,12 +141,18 @@ namespace WpfApp1
                 _mre.Set();
                 bntPause.Content = "Pause";
             }
-            else {
+            else
+            {
                 _mre.Reset();// лочимо потік
-                bntPause.Content = "Відновити";
-
+                bntPause.Content = "Restore";
             }
             _isPause = !_isPause;
+        }
+
+        private void mActionUsrers_Click(object sender, RoutedEventArgs e)
+        {
+            UsersWindows userWindow = new UsersWindows(_myDataContext);
+            userWindow.Show();
         }
     }
 }

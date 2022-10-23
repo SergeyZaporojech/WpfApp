@@ -5,33 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Головне вікно" Height="450" Width="800">
+        Title="Головне вікно" Height="379" Width="666">
     <DockPanel>
 
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Файл" FontSize="20">
+            <MenuItem Header="Файл" FontSize="15">
                 <MenuItem Header="Вихід" Name="mFileExit" Click="mFileExit_Click">
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Дії" FontSize="20">
+            <MenuItem Header="Дії" FontSize="15">
                 <MenuItem Header="Реєстрація" Name="mActionREgister" Click="mActionREgister_Click" />
                 <MenuItem Header="Логін" Name="mActionLogin" Click="mActionLogin_Click" />
+                <MenuItem Header="Користувачі" Name="mActionUsrers" Click="mActionUsrers_Click" />
 
             </MenuItem>
-            <MenuItem Header ="Допомога" FontSize="20"/>
+            <MenuItem Header ="Допомога" FontSize="15"/>
         </Menu>
 
         <StatusBar DockPanel.Dock ="Bottom"  >
             <Label Name="lblStatusBar" Content=" Форма запущена" Foreground="Green"/>
         </StatusBar>
-        <Grid>
-            <Button Name="bntConnection" Content="Додати користувачів" Click="btnAddUsers_Click" Margin="0,72,118,0" Height="54" VerticalAlignment="Top" HorizontalAlignment="Right" Width="195" />
-            <Button Name="bntCansel" Content="Відміна" Click="bntCansel_Click" Margin="0,145,554,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="173" />
-            <Button Name="bntPause" Content="Пауза" Click="bntPause_Click" Margin="0,147,328,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="173" />
+        <Grid Height="333" Width="668">
+            <Button Name="bntConnection" Content="Додати користувачів" Click="btnAddUsers_Click" Margin="0,42,183,0" Height="36" VerticalAlignment="Top" HorizontalAlignment="Right" Width="175" />
+            <Button Name="bntCansel" Content="Відміна" Click="bntCansel_Click" Margin="0,132,437,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="153" />
+            <Button Name="bntPause" Content="Пауза" Click="bntPause_Click" Margin="0,182,439,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" RenderTransformOrigin="0.059,0.529" />
 
-
-            <TextBox x:Name="txtCount" HorizontalAlignment="Left" Margin="156,84,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="200" FontSize="16" Height="30"/>
-            <ProgressBar Name="pbCount" HorizontalAlignment="Left" Height="20" Margin="31,0,0,23" VerticalAlignment="Bottom" Width="724"/>
+            <TextBox x:Name="txtCount" HorizontalAlignment="Left" Margin="139,49,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="100" FontSize="16" Height="30"/>
+            <ProgressBar Name="pbCount" HorizontalAlignment="Left" Height="20" Margin="21,0,0,62" VerticalAlignment="Bottom" Width="617"/>
         </Grid>
 
 
