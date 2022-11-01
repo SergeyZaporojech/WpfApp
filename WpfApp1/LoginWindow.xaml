@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Авторизація" Height="237" Width="351">
     <Canvas>
-        <Button x:Name="___btnLogin_" Content="Вхід"  Width="194" Height="22" Canvas.Left="72" Canvas.Top="158" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+        <Button x:Name="___btnLogin_" Content="Вхід"  Width="194" Height="22" Canvas.Left="72" Canvas.Top="158" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Click="___btnLogin__Click">
         </Button>
         <Label Content="Ім'я користувача" Canvas.Left="41" Canvas.Top="22" FontWeight="Bold"/>
         <TextBox x:Name="txtUserName" Canvas.Left="43" TextWrapping="Wrap" Canvas.Top="52" Width="241" HorizontalAlignment="Left" VerticalAlignment="Top"/>

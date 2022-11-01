@@ -1,4 +1,5 @@
 ﻿using LibData.Entities;
+using LibData.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,25 +12,23 @@ using System.Threading.Tasks;
 
 namespace LibData
 {
-    public class MyDataContext : DbContext
+    public class MyDataContext : DbContext                                             //наслідуємся від DbContext 
     {
         public MyDataContext()
         {
-            this.Database.Migrate();
+            
+            this.Database.Migrate();                                                   //для міграції при роботі з декількома БД
         }
-        public DbSet<UserEntitie> Users { get; set; }
+        public DbSet<UserEntitie> Users { get; set; }                                  //таблиця юзерів
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)  //оверрайд метода OnConfiguring
         {
-            var configBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config.json");
-            var config = configBuilder.Build();
-            var dbConnection = config.GetSection("ConnectionBD").Value;
+                                            
+            var dbConnection = MyAppConfig.GetSectionValue("ConnectionBD");
 
             optionsBuilder.UseNpgsql(dbConnection);
 
-        //    optionsBuilder.UseNpgsql("" +
+        //    optionsBuilder.UseNpgsql("" +                                          //колишня строка підключення до БД
         //        "Server=localhost;" +
         //        "Port=5432;" +
         //        "Database=wpfdata;" +

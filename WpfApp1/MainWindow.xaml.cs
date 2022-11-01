@@ -52,6 +52,7 @@ namespace WpfApp1
         private void ConnectionDatabase()
         {
             MyDataContext myDataContext = new MyDataContext();
+            myDataContext.ChangeTracker.AutoDetectChangesEnabled = false;        //відключаємо трекер для додавання швидкості додавання
             _connectionComplete?.Invoke(myDataContext);
         }
 
@@ -73,6 +74,15 @@ namespace WpfApp1
         {
             RegistrWindow window = new RegistrWindow();
             window.ShowDialog();
+            UserEntitie newUser = new UserEntitie
+            {
+                Name = window.Name,
+                Phone = window.Phone,
+                Password = window.Password,
+                DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
+            };
+            _myDataContext.Users.Add(newUser);
+            _myDataContext.SaveChanges();
         }
 
  
@@ -80,6 +90,23 @@ namespace WpfApp1
         {
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
+            var users = _myDataContext.Users
+                .AsQueryable();
+            bool isLogin = false;
+            foreach (var item in users)
+            {
+                if (item.Name == window.Name && item.Password == window.Password)
+                {
+                    window.Close();
+                    isLogin = true;
+                }                  
+            }
+            if (isLogin)
+            {
+                UsersWindows userWindow = new UsersWindows(_myDataContext);
+                userWindow.Show();
+            }
+            else MessageBox.Show($"Ім'я користувача чи  пароль невірні");
         }
 
         private void btnAddUsers_Click(object sender, RoutedEventArgs e)
@@ -92,21 +119,29 @@ namespace WpfApp1
 
             Task thread = new Task(()=>AddUsers(count),token);
             thread.Start();
-
             _mre.Set();           
         }
         private void AddUsers(object count)
         {
             int countAdd = (int)(count);
+                var testUser = new Faker<UserEntitie>("uk")
+                    .RuleFor(o => o.Name, f => f.Name.FullName())
+                    .RuleFor(o => o.Phone, f => f.Person.Phone)
+                    .RuleFor(o => o.Password, f => f.Internet.Password())
+                    .RuleFor(o => o.DateCreated, f => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc));
+
             for (int i = 0; i < countAdd; i++)
             {
-               _myDataContext.Users.Add(new UserEntitie
-                {
-                    Name = "Іван",
-                    Phone = "097 56 56 765",
-                    Password = "123456",
-                    DateCreated = DateTime.SpecifyKind(DateTime.Now,DateTimeKind.Utc),
-                });
+                var user = testUser.Generate();
+                _myDataContext.Users.Add(user);
+
+               //_myDataContext.Users.Add(new UserEntitie
+               // {
+               //     Name = "Іван",
+               //     Phone = "097 56 56 765",
+               //     Password = "123456",
+               //     DateCreated = DateTime.SpecifyKind(DateTime.Now,DateTimeKind.Utc),
+               // });
                 _myDataContext.SaveChanges();
                 Dispatcher.Invoke(() =>
                 {

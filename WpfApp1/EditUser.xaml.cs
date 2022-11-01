@@ -1,5 +1,4 @@
-﻿using Npgsql.Internal.TypeHandling;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,22 +15,30 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// Interaction logic for LoginWindow.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class EditUser : Window
     {
         public string Name { get; set; }
+        public string Phone { get; set; }
         public string Password { get; set; }
-        public LoginWindow()
+        public EditUser()
         {
             InitializeComponent();
-
+        }
+        //private void Window_ContentRendered(object sender, EventArgs e)
+        private void Window_Loaded(object sender, EventArgs e)
+        {
+            txtUserName.Text = Name;
+            txtPhone.Text = Phone;
+            txtPassword.Text = Password;
         }
 
-        private void ___btnLogin__Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             Name = txtUserName.Text;
-            Password = txtPassvord.Text;
+            Phone = txtPhone.Text;
+            Password = txtPassword.Text;
             this.Close();
         }
     }

@@ -17,6 +17,8 @@ namespace LibData.Entities
         public string Name { get; set; }
         [ StringLength(20)]
         public string Phone { get; set; }
+        [StringLength(200)]
+        public string Image { get; set; }
         [ StringLength(200)]
         public string Password { get; set; }
         public DateTime? DateCreated { get; set; }

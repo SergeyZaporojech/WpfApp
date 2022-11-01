@@ -9,17 +9,17 @@
     <DockPanel>
 
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Файл" FontSize="15">
+            <MenuItem Header="Файл" FontSize="13">
                 <MenuItem Header="Вихід" Name="mFileExit" Click="mFileExit_Click">
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Дії" FontSize="15">
+            <MenuItem Header="Дії" FontSize="13">
                 <MenuItem Header="Реєстрація" Name="mActionREgister" Click="mActionREgister_Click" />
                 <MenuItem Header="Логін" Name="mActionLogin" Click="mActionLogin_Click" />
                 <MenuItem Header="Користувачі" Name="mActionUsrers" Click="mActionUsrers_Click" />
 
             </MenuItem>
-            <MenuItem Header ="Допомога" FontSize="15"/>
+            <MenuItem Header ="Допомога" FontSize="13"/>
         </Menu>
 
         <StatusBar DockPanel.Dock ="Bottom"  >
@@ -27,7 +27,7 @@
         </StatusBar>
         <Grid Height="333" Width="668">
             <Button Name="bntConnection" Content="Додати користувачів" Click="btnAddUsers_Click" Margin="0,42,183,0" Height="36" VerticalAlignment="Top" HorizontalAlignment="Right" Width="175" />
-            <Button Name="bntCansel" Content="Відміна" Click="bntCansel_Click" Margin="0,132,437,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="153" />
+            <Button Name="bntCansel" Content="Відміна" Click="bntCansel_Click" Margin="0,124,434,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="153" />
             <Button Name="bntPause" Content="Пауза" Click="bntPause_Click" Margin="0,182,439,0" Height="29" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" RenderTransformOrigin="0.059,0.529" />
 
             <TextBox x:Name="txtCount" HorizontalAlignment="Left" Margin="139,49,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="100" FontSize="16" Height="30"/>

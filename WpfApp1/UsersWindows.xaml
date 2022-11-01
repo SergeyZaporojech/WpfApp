@@ -6,31 +6,50 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="UsersWindows" Height="450" Width="800">
-    <DockPanel>
+    <DockPanel Margin="0,0,0,10">
         <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0"   Width="150">
             <Button Name="btnAddUser" Margin="20,10" Click="btnAddUser_Click" >Додати</Button>
             <Button Name="btnEditUser" Margin="20,0" Click="btnEditUser_Click" >Змінити</Button>
 
         </StackPanel>
 
-
-        <WrapPanel DockPanel.Dock="Bottom">
-
+        <WrapPanel DockPanel.Dock="Bottom" Margin=" 10,0,10,0">
+            <Label Name ="labelInfo" Content="0/0" Margin=" 0,0,50,0"></Label>
+            <Label Name ="labeTime" Content="0.0" Margin=" 0,0,50,0"></Label>
+            <Button Name ="btnPev" Content="&lt;&lt;" FontSize="18" Margin=" 0,0,15,0" Click="btnPev_Click"/>
+            <Button Name ="btnNext" Content=">>" FontSize="18" Click="btnNext_Click"/>
         </WrapPanel>
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140" />
+                <RowDefinition Height="*" />
+                
+            </Grid.RowDefinitions>
+            <Canvas>
+                <Button Name = "btnSearch" Content="Пошук" Canvas.Left="573" Canvas.Top="12" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Click="btnSearch_Click"></Button>
+                <TextBox Name="txtName"  Canvas.Left="86" TextWrapping="Wrap" Text="" Canvas.Top="15" Width="120"/>
+                <Label Content="Ім'я" Canvas.Left="16" Canvas.Top="10"/>
+            </Canvas>
 
-            <DataGrid Name ="dgUsers" IsReadOnly = "True" AutoGenerateColumns="False">
+            <DataGrid Grid.Row ="1" Name ="dgUsers" IsReadOnly = "True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
+
+                    <DataGridTemplateColumn Header="Фото" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageFilePath}" Width="32" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                     <DataGridTextColumn Header ="Ім'я " Binding ="{Binding Name}"
-                                    MinWidth="250" Width="auto"/>
+                                        MinWidth="250" Width="auto"/>
                     <DataGridTextColumn Header ="Телефон " Binding ="{Binding Phone}"
                                      MinWidth="150" Width="auto"/>
                     <DataGridTextColumn Header ="Дата створення " Binding ="{Binding DateCreated}"
                                      MinWidth="150" Width="auto"/>
-
                 </DataGrid.Columns>
-
             </DataGrid>
         </Grid>
     </DockPanel>
