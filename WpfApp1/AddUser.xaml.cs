@@ -2,6 +2,7 @@
 using System;
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Path = System.IO.Path;
 
 namespace WpfApp1
 {
@@ -21,10 +25,10 @@ namespace WpfApp1
     /// </summary>
     public partial class AddUser : Window
     {
-
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
+        public string Image { get; set; }
         public AddUser()
         {
             InitializeComponent();
@@ -32,9 +36,19 @@ namespace WpfApp1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string dir = "images";
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            Bitmap bitmap = new Bitmap(Image);
+            string imageName = Path.GetRandomFileName() + ".jpg";
+            bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg); // формуємо файл зображення у папці та з назвою
+
             Name = txtUserName.Text;
             Phone = txtPhone.Text;
             Password = txtPassword.Text;
+            Image = imageName;
+
             this.Close();
         }
 
@@ -43,17 +57,17 @@ namespace WpfApp1
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.InitialDirectory = "c:\\";
             dlg.Filter = "Image files (*.jpg)|*.jpg|All Files (*.*)|*.*";
-            dlg.RestoreDirectory = true;
-            //if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            //{
-            //    string selectedFileName = dlg.FileName;
-            //    //FileNameLabel.Content = selectedFileName;
-            //    BitmapImage bitmap = new BitmapImage();
-            //    bitmap.BeginInit();
-            //    bitmap.UriSource = new Uri(selectedFileName);
-            //    bitmap.EndInit();
-            //    Foto.Source = bitmap;
-            //}
+            dlg.RestoreDirectory = true;            
+            if (dlg.ShowDialog() == true)
+            {
+                Image = dlg.FileName;
+                //FileNameLabel.Content = selectedFileName;
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(Image);
+                bitmap.EndInit();
+                Foto.Source = bitmap;
+            }
         }
     }
 }

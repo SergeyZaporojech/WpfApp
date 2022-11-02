@@ -98,6 +98,7 @@ namespace WpfApp1
                 Name = window.Name,
                 Phone = window.Phone,
                 Password = window.Password,
+                Image = window.Image,
                 DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
                 //додати дату створення юзера
             };
