@@ -15,8 +15,9 @@ namespace LibData.Entities
         public int Id { get; set; }
         [Required, StringLength(150)]
         public string Name { get; set; }
-        [ StringLength(20)]
+        [ StringLength(20)]        
         public string Phone { get; set; }
+        public Gender Gender { get; set; }
         [StringLength(200)]
         public string Image { get; set; }
         [ StringLength(200)]

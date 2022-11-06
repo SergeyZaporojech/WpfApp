@@ -15,7 +15,7 @@ namespace LibData.Helpers
           .SetBasePath(Directory.GetCurrentDirectory())
           .AddJsonFile("config.json");
             var config = configBuilder.Build();
-            var data= config.GetSection(section).Value;
+            var data = config.GetSection(section).Value;
             return data;
         }
     }

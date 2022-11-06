@@ -40,14 +40,16 @@ namespace WpfApp1
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            Bitmap bitmap = new Bitmap(Image);
-            string imageName = Path.GetRandomFileName() + ".jpg";
-            bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg); // формуємо файл зображення у папці та з назвою
-
+            if (Image!=null)
+            {
+                Bitmap bitmap = new Bitmap(Image);
+                string imageName = Path.GetRandomFileName() + ".jpg";
+                bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg); // формуємо файл зображення у папці та з назвою
+                Image = imageName;
+            }
             Name = txtUserName.Text;
             Phone = txtPhone.Text;
             Password = txtPassword.Text;
-            Image = imageName;
 
             this.Close();
         }

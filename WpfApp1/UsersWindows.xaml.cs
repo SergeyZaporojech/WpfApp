@@ -2,11 +2,13 @@
 using LibData.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -61,7 +63,7 @@ namespace WpfApp1
                     Phone = x.Phone,
                     DateCreated = x.DateCreated != null ?
                     x.DateCreated.Value.ToString("dd MMMM yyyy HH:mm:ss", cultureInfo) :"",
-                    Image = x.Image??"noimage.png"
+                    Image = x.Image ??"noimage.png"
                 })
                     .Skip(skip)
                     .Take(PageSize)
@@ -105,6 +107,7 @@ namespace WpfApp1
            
             _myDataContext.Users.Add(newUser);
             _myDataContext.SaveChanges();
+            InitDataGrid(ReadDataSearch());
         }
 
         private void btnEditUser_Click(object sender, RoutedEventArgs e)                     //коригування ім'я вибраного юзера
@@ -119,24 +122,22 @@ namespace WpfApp1
                         EditUser editUser = new EditUser 
                             { Name = user.Name,
                             Phone=user.Phone,
-                            Password=user.Password
+                            Password=user.Password,
+                            _Image=user.Image
                         };
                         //editUser.Show();
-
-                        if (!editUser.ShowDialog() == editUser.ShowActivated) 
+                        if (!editUser.ShowDialog() == editUser.ShowActivated)
                         {
-                            UserEntitie updateUser = new UserEntitie
-                            {                                
-                                Name = editUser.Name,
-                                Phone = editUser.Phone,
-                                Password = editUser.Password,
-                                DateUbdate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
-                            };
-                            _myDataContext.Users.Update(updateUser);
+                            user.Name = editUser.Name;
+                            user.Phone = editUser.Phone;
+                            user.Password = editUser.Password;
+                            user.Image = editUser._Image;
+                            user.DateUbdate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+                            
+                            _myDataContext.Users.Update(user);
                             _myDataContext.SaveChanges();
-                            userVM.Name = editUser.Name;
-                            userVM.Phone = editUser.Phone;
-                        }
+                            InitDataGrid(ReadDataSearch());
+                        }                        
                     }                   
                 }
         }
@@ -155,6 +156,9 @@ namespace WpfApp1
             {
                 query = query.Where(x => x.Name.Contains(search.Name));
             }
+            if (cbIsImage.IsChecked == true)
+                     query = query.Where(x => x.Image != null);
+            
             int count = query.Count();
             return query;
         }
@@ -174,6 +178,25 @@ namespace WpfApp1
             page = ++p;
             var query = ReadDataSearch();
             InitDataGrid(query);
+        }
+
+        private void btnDeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgUsers.SelectedItem != null)
+                if (dgUsers.SelectedItem is UserVM)
+                {
+                    var userVM = (UserVM)dgUsers.SelectedItem;
+                    var user = _myDataContext.Users.SingleOrDefault(x => x.Id == userVM.Id);
+                    if (user.Image != null)
+                        File.Delete(@$"images\{user.Image}");
+
+                    if (user != null)
+                    {
+                        _myDataContext.Users.Remove(user);
+                        _myDataContext.SaveChanges();
+                        InitDataGrid(ReadDataSearch());
+                    }
+                }
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Додати користувача" Height="237" Width="500">
+        Title="Додати користувача" Height="250" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250"/>
@@ -37,7 +37,7 @@
 
         </StackPanel>
         <Image x:Name="Foto" Grid.Column="0" Source="/notFoto.jpg" Margin="22,18,40,26"  />
-        <Button Name ="btnAddImage" Content="Вибрати фото" HorizontalAlignment="Left" Margin="181,196,0,0" VerticalAlignment="Top" Height="16" Width="56" FontSize="8" Click="btnAddImage_Click"/>
+        <Button Name ="btnAddImage" Content="Вибрати фото" HorizontalAlignment="Left" Margin="181,182,0,0" VerticalAlignment="Top" Height="16" Width="56" FontSize="8" Click="btnAddImage_Click" RenderTransformOrigin="0.515,-0.441"/>
 
     </Grid>
 </Window>

@@ -10,6 +10,7 @@
         <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0"   Width="150">
             <Button Name="btnAddUser" Margin="20,10" Click="btnAddUser_Click" >Додати</Button>
             <Button Name="btnEditUser" Margin="20,0" Click="btnEditUser_Click" >Змінити</Button>
+            <Button x:Name="btnDeleteUser" Margin="20,10" Click="btnDeleteUser_Click" Content="Видалити" />
 
         </StackPanel>
 
@@ -24,12 +25,13 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="140" />
                 <RowDefinition Height="*" />
-                
+
             </Grid.RowDefinitions>
             <Canvas>
                 <Button Name = "btnSearch" Content="Пошук" Canvas.Left="573" Canvas.Top="12" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Click="btnSearch_Click"></Button>
                 <TextBox Name="txtName"  Canvas.Left="86" TextWrapping="Wrap" Text="" Canvas.Top="15" Width="120"/>
                 <Label Content="Ім'я" Canvas.Left="16" Canvas.Top="10"/>
+                <CheckBox x:Name="cbIsImage" Content="Тільки із фото" Canvas.Left="28" Canvas.Top="59" RenderTransformOrigin="-0.269,0.665" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Canvas>
 
             <DataGrid Grid.Row ="1" Name ="dgUsers" IsReadOnly = "True" AutoGenerateColumns="False">

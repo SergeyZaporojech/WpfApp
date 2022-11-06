@@ -2,10 +2,15 @@
 using LibData;
 using LibData.Delegates;
 using LibData.Entities;
+using LibData.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +24,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WpfApp1.Helper;
+using BogusGender = Bogus.DataSets.Name.Gender;
 
 namespace WpfApp1
 {
@@ -124,15 +131,37 @@ namespace WpfApp1
         private void AddUsers(object count)
         {
             int countAdd = (int)(count);
+           
                 var testUser = new Faker<UserEntitie>("uk")
-                    .RuleFor(o => o.Name, f => f.Name.FullName())
+                    .RuleFor(o => o.Gender, f => f.PickRandom<Gender>())
+                    .RuleFor(o => o.Name, (f,u) => f.Name.FullName((BogusGender)(int)u.Gender))
                     .RuleFor(o => o.Phone, f => f.Person.Phone)
                     .RuleFor(o => o.Password, f => f.Internet.Password())
+                    //.RuleFor(o => o.Image, f => f.Image.LoremFlickrUrl())
                     .RuleFor(o => o.DateCreated, f => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc));
 
             for (int i = 0; i < countAdd; i++)
             {
                 var user = testUser.Generate();
+                using (WebClient client = new WebClient())
+                {
+                    string url = user.Gender == Gender.Male ? "https://loremflickr.com/1280/960/man" :
+                        "https://loremflickr.com/1280/960/girl";
+                    using (Stream stream = client.OpenRead(url))
+                    {
+                        Bitmap bmp = new Bitmap(stream);
+                    string fileName = System.IO.Path.GetRandomFileName() + ".jpg";
+                        string[] sizes = { "32", "100", "300", "600", "1200" };
+                        foreach (var size in sizes)
+                        {
+                            int width = int.Parse(size);
+                            var saveBmp = ImageWorker.CompressImage(bmp, width, width, false);
+                            saveBmp.Save($"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{size}_{fileName}",
+                                ImageFormat.Jpeg);
+                        }
+                        user.Image = fileName;
+                    }
+                }
                 _myDataContext.Users.Add(user);
 
                //_myDataContext.Users.Add(new UserEntitie
@@ -150,7 +179,6 @@ namespace WpfApp1
                 });
 
                 _mre.WaitOne(Timeout.Infinite);
-
 
                 if (token.IsCancellationRequested)
                 {

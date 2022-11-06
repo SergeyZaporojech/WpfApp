@@ -5,38 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Головне вікно" Height="237" Width="500">
-    <Grid>
+        Title="Головне вікно" Height="297" Width="689" Loaded="Windows_Loaded">
+    <Grid Margin="0,0,12,-8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250"/>
+            <ColumnDefinition MinWidth="250"  />
             <ColumnDefinition />
+            <ColumnDefinition />
+                            
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Margin="8,12,12,8">
+        <StackPanel Margin="9,7,10,-2" Grid.Column="1">
             <Label Content="Ім'я користувача" Canvas.Left="41" Canvas.Top="22" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtUserName"  Width="184" 
-                     HorizontalAlignment="Center"/>
+            <TextBox x:Name="txtUserName"  Width="184"  HorizontalAlignment="Center"/>
 
             <Label Content="Телефон" FontWeight="Bold" HorizontalAlignment="Center" />
-            <TextBox x:Name="txtPhone"  Width="187" 
-                     HorizontalAlignment="Center"/>
+            <TextBox x:Name="txtPhone"  Width="187"   HorizontalAlignment="Center"/>
 
             <Label Content="Пароль"  FontWeight="Bold" HorizontalAlignment="Center" />
-            <TextBox x:Name="txtPassword"  Width="185" 
-                     HorizontalAlignment="Center"/>
-            <Button Content="Реєстрація" Click="Button_Click" Height="22" Width="162" Margin="20,10" RenderTransformOrigin="0.5,0.5" >
-                <Button.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="0.096"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Button.RenderTransform>
-            </Button>
+            <TextBox x:Name="txtPassword"  Width="185"   HorizontalAlignment="Center"/>
+
+            <Label Content="Cтать"  FontWeight="Bold" HorizontalAlignment="Center" />
+            <ComboBox x:Name="cbGender"  Width="184" />
+
+            <Button x:Name="Registring"  Content="Реєстрація" Click="Registring_Click" Height="22" Width="162" Margin="10,15,10,0" />
 
         </StackPanel>
-        <Image x:Name="Foto" Grid.Column="0" Source="/notFoto.jpg" Margin="22,18,40,26"  />
+        <Grid Grid.Column="0" Margin="0,2,12,0" Grid.ColumnSpan="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Row ="0"  Source="/notFoto.jpg" Margin="0,3,17,138" Grid.RowSpan="2" />
+            <ListBox x:Name="lbItem"
+                     Grid.Row="1"
+                     Margin="20,15"
+                     SelectionMode="Multiple"/>
+        </Grid>
+        <!--<StackPanel Grid.Column="2">
+            <RadioButton x:Name="pbPosition";/>
+        </StackPanel>-->
 
     </Grid>
 </Window>
