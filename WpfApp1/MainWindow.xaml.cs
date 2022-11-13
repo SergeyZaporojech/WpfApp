@@ -25,6 +25,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using WpfApp1.Helper;
+using WpfAppSimple.ProductAction;
 using BogusGender = Bogus.DataSets.Name.Gender;
 
 namespace WpfApp1
@@ -216,6 +217,18 @@ namespace WpfApp1
         {
             UsersWindows userWindow = new UsersWindows(_myDataContext);
             userWindow.Show();
+        }
+
+        private void mActionProducts_Click(object sender, RoutedEventArgs e)
+        {
+            ProductWindow dlg = new ProductWindow(_myDataContext);
+            dlg.Show();
+        }
+
+        private void mActionImage_Click(object sender, RoutedEventArgs e)
+        {
+            ProductForm dlg = new ProductForm();
+            dlg.ShowDialog();
         }
     }
 }

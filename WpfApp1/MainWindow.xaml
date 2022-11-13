@@ -17,6 +17,8 @@
                 <MenuItem Header="Реєстрація" Name="mActionREgister" Click="mActionREgister_Click" />
                 <MenuItem Header="Логін" Name="mActionLogin" Click="mActionLogin_Click" />
                 <MenuItem Header="Користувачі" Name="mActionUsrers" Click="mActionUsrers_Click" />
+                <MenuItem Header="Товари" Name="mActionProducts" Click="mActionProducts_Click" />
+                <MenuItem Header="Продукти" Name="mActionImage" Click="mActionImage_Click" />
 
             </MenuItem>
             <MenuItem Header ="Допомога" FontSize="13"/>

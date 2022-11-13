@@ -18,6 +18,8 @@ using System.Windows.Shapes;
 using Path = System.IO.Path;
 using static System.Net.Mime.MediaTypeNames;
 using Bogus.DataSets;
+using LibData.Helpers;
+using WpfApp1.Helper;
 
 namespace WpfApp1
 {
@@ -29,7 +31,7 @@ namespace WpfApp1
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
-        public string _Image { get; set; }
+        public string _Image { get; set; }        
         public EditUser()
         {
             InitializeComponent();
@@ -39,33 +41,11 @@ namespace WpfApp1
         {
             txtUserName.Text = Name;
             txtPhone.Text = Phone;
-            txtPassword.Text = Password;
+            txtPassword.Text = Password;            
             //string userImage = Path.Combine("image", Image);
             //Foto.Source = userImage;
             if (_Image != null)
-            {
-                //BitmapImage bitmap = new BitmapImage();
-                //bitmap.BeginInit();
-                ////var img =  System.Drawing.Image.FromFile(Path.Combine("images", _Image));
-                //bitmap.UriSource = new Uri($@"images/{_Image}");
-                                
-                //bitmap.EndInit();
-                //Foto.Source = bitmap;
-
-                //BitmapImage bi = new BitmapImage();
-                //System.Drawing.Image img;
-                //MemoryStream strm = new MemoryStream();
-                //strm.Write(bindata, 0, bindata.Length);
-                //strm.Position = 0;
-                //img = System.Drawing.Image.FromStream(strm);
-                //bi.BeginInit();
-                //MemoryStream ms = new MemoryStream();
-                //img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                //ms.Seek(0, SeekOrigin.Begin);
-                //bi.StreamSource = ms;
-                //bi.EndInit();
-                //Foto.Source = bi; 
-                //Foto.Source = BitmapFromUri(new Uri($@"images/{_Image}");
+            {               
 
                 var bitmap = new BitmapImage();
 
@@ -86,21 +66,38 @@ namespace WpfApp1
             string dir = "images";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
+            
 
-            Bitmap bitmap = new Bitmap(_Image);
-            string imageName = Path.GetRandomFileName() + ".jpg";
-            bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg);
+            if (_Image != null)
+            {
+                Bitmap bitmap = new Bitmap(_Image);
+                string imageName = Path.GetRandomFileName() + ".jpg";
+                string[] sizes = { "32", "100", "300", "600", "1200" };
+                foreach (var size in sizes)
+                {
+                    int width = int.Parse(size);
+                    var saveBmp = ImageWorker.CompressImage(bitmap, width, width, false);
+                    saveBmp.Save($"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{size}_{imageName}",
+                        ImageFormat.Jpeg);
+                }
+                _Image = imageName;
+            }
 
             Name = txtUserName.Text;
             Phone = txtPhone.Text;
-            Password = txtPassword.Text;
-            _Image = imageName;
+            Password = txtPassword.Text;            
             this.Close();
         }
         private void btnAddImage_Click(object sender, RoutedEventArgs e)
         {
             if (_Image != null)
-                File.Delete(@$"images\{_Image}");
+            {               
+                string[] sizes = { "32", "100", "300", "600", "1200" };
+                foreach (var size in sizes)
+                {
+                    File.Delete(@$"images\{size}_{_Image}");
+                }
+            }
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.InitialDirectory = "c:\\";
             dlg.Filter = "Image files (*.jpg)|*.jpg|All Files (*.*)|*.*";

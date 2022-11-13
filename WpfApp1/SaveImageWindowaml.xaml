@@ -1,11 +1,11 @@
-﻿<Window x:Class="WpfApp1.AddUser"
+﻿<Window x:Class="WpfApp1.SaveImageWindowaml"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Додати користувача" Height="263" Width="523" Loaded="Window_Load">
+        Title="SaveImageWindowaml" Height="426" Width="582">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250"/>
@@ -42,7 +42,8 @@
             </Button>
 
         </StackPanel>
-        <Image x:Name="Foto" Grid.Column="0" Source="/notFoto.jpg" Margin="22,18,40,26"  />
+        <Image x:Name="imputImage" Grid.Column="0" Source="/notFoto.jpg" Margin="22,18,170,282"  />
+        <Image x:Name="outImage" Grid.Column="0" Source="/notFoto.jpg" Margin="16,174,178,113"  />
         <Button Name ="btnAddImage" Content="Вибрати фото" HorizontalAlignment="Left" Margin="181,182,0,0" VerticalAlignment="Top" Height="16" Width="56" FontSize="8" Click="btnAddImage_Click" RenderTransformOrigin="0.515,-0.441"/>
 
     </Grid>

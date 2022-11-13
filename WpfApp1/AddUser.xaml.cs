@@ -17,6 +17,12 @@ using System.Windows.Shapes;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Path = System.IO.Path;
+using LibData.Helpers;
+using WpfApp1.Helper;
+using LibData.Entities;
+using WpfApp1.Models;
+
+
 
 namespace WpfApp1
 {
@@ -29,6 +35,8 @@ namespace WpfApp1
         public string Phone { get; set; }
         public string Password { get; set; }
         public string Image { get; set; }
+        public Gender Gender { get; set; }      
+
         public AddUser()
         {
             InitializeComponent();
@@ -39,14 +47,33 @@ namespace WpfApp1
             string dir = "images";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
+            var index = cbGender.SelectedIndex;
+            var item = (MyComboBoxItem)cbGender.Items[index];
+            if (item.Id == -1)
+            {
+                MessageBox.Show("Вкажіть сать");
+                return;
+            }
+            //Gender gender = (Gender)item.Id;
+            //MessageBox.Show(gender.ToString());
 
             if (Image!=null)
-            {
-                Bitmap bitmap = new Bitmap(Image);
+            {                
+                Bitmap bitmap = new Bitmap(Image);                
                 string imageName = Path.GetRandomFileName() + ".jpg";
-                bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg); // формуємо файл зображення у папці та з назвою
+                string[] sizes = { "32", "100", "300", "600", "1200" };
+                foreach (var size in sizes)
+                {
+                    int width = int.Parse(size);
+                    var saveBmp = ImageWorker.CompressImage(bitmap, width, width, false);
+                    saveBmp.Save($"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{size}_{imageName}",
+                        ImageFormat.Jpeg);
+                }
+
+                //bitmap.Save(Path.Combine(dir, imageName), ImageFormat.Jpeg); // формуємо файл зображення у папці та з назвою
                 Image = imageName;
             }
+            this.Gender = (Gender)item.Id;
             Name = txtUserName.Text;
             Phone = txtPhone.Text;
             Password = txtPassword.Text;
@@ -59,7 +86,8 @@ namespace WpfApp1
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.InitialDirectory = "c:\\";
             dlg.Filter = "Image files (*.jpg)|*.jpg|All Files (*.*)|*.*";
-            dlg.RestoreDirectory = true;            
+            dlg.RestoreDirectory = true;
+  
             if (dlg.ShowDialog() == true)
             {
                 Image = dlg.FileName;
@@ -71,5 +99,35 @@ namespace WpfApp1
                 Foto.Source = bitmap;
             }
         }
+
+        private void Window_Load(object sender, RoutedEventArgs e)
+        {
+            #region ComboBox
+            MyComboBoxItem noData = new MyComboBoxItem
+            {
+                Id = -1,
+                Name = "Не вказано"
+            };
+            cbGender.Items.Add(noData);
+
+            MyComboBoxItem male = new MyComboBoxItem
+            {
+                Id = (int)Gender.Male,
+                Name = "Чоловік"
+            };
+            cbGender.Items.Add(male);
+            MyComboBoxItem female = new MyComboBoxItem
+            {
+                Id = (int)Gender.Female,
+                Name = "Жінка"
+            };
+            cbGender.Items.Add(female);
+
+            cbGender.SelectedIndex = 0;
+
+            #endregion
+        }
+
+
     }
 }

@@ -20,6 +20,8 @@ namespace LibData
             this.Database.Migrate();                                                   //для міграції при роботі з декількома БД
         }
         public DbSet<UserEntitie> Users { get; set; }                                  //таблиця юзерів
+        public DbSet<ProductEntitie> Products { get; set; }                            //таблиця товарів
+        public DbSet<ProductImage> ProductImages { get; set; }                            //таблиця 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)  //оверрайд метода OnConfiguring
         {

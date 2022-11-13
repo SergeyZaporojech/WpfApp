@@ -8,29 +8,36 @@
         Title="Головне вікно" Height="297" Width="689" Loaded="Windows_Loaded">
     <Grid Margin="0,0,12,-8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250"  />
+            <ColumnDefinition MinWidth="250" />
             <ColumnDefinition />
             <ColumnDefinition />
-                            
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="9,7,10,-2" Grid.Column="1">
+        <StackPanel Margin="9,7,10,-2" Grid.Column="1" >
             <Label Content="Ім'я користувача" Canvas.Left="41" Canvas.Top="22" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBox x:Name="txtUserName"  Width="184"  HorizontalAlignment="Center"/>
-
-            <Label Content="Телефон" FontWeight="Bold" HorizontalAlignment="Center" />
-            <TextBox x:Name="txtPhone"  Width="187"   HorizontalAlignment="Center"/>
-
-            <Label Content="Пароль"  FontWeight="Bold" HorizontalAlignment="Center" />
-            <TextBox x:Name="txtPassword"  Width="185"   HorizontalAlignment="Center"/>
-
-            <Label Content="Cтать"  FontWeight="Bold" HorizontalAlignment="Center" />
-            <ComboBox x:Name="cbGender"  Width="184" />
-
-            <Button x:Name="Registring"  Content="Реєстрація" Click="Registring_Click" Height="22" Width="162" Margin="10,15,10,0" />
-
+            <TextBox x:Name="txtUserName"  Width="184"/>
+            <Label Content="Телефон"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center" />
+            <TextBox x:Name="txtPhone"
+                     Width="187"/>
+            <Label Content="Пароль"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"/>
+            <TextBox x:Name="txtPassword"
+                     Width="185"/>
+            <Label Content="Cтать"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"/>
+            <ComboBox x:Name="cbGender"
+                      Width="184"/>
+            <Button x:Name="Registring"
+                    Content="Реєстрація"
+                    Click="Registring_Click"
+                    Height="22" Width="162"
+                    Margin="10,15,10,0"/>
         </StackPanel>
-        <Grid Grid.Column="0" Margin="0,2,12,0" Grid.ColumnSpan="0">
+        <Grid Grid.Column="0" Margin="0,2,12,0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -41,9 +48,11 @@
                      Margin="20,15"
                      SelectionMode="Multiple"/>
         </Grid>
-        <!--<StackPanel Grid.Column="2">
-            <RadioButton x:Name="pbPosition";/>
-        </StackPanel>-->
+        <StackPanel Grid.Column="2">
+            <RadioButton x:Name="pbPosition"/>
+            <RadioButton x:Name="pbPosition2"/>
+            <RadioButton x:Name="pbPosition3"/>
+        </StackPanel>
 
     </Grid>
 </Window>

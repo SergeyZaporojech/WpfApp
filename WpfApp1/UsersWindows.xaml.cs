@@ -101,8 +101,8 @@ namespace WpfApp1
                 Phone = window.Phone,
                 Password = window.Password,
                 Image = window.Image,
-                DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
-                //додати дату створення юзера
+                Gender = window.Gender,
+                DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)                
             };
            
             _myDataContext.Users.Add(newUser);
@@ -144,7 +144,8 @@ namespace WpfApp1
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            
+            page = 0;
+            //var 
             InitDataGrid(ReadDataSearch());
         }
         private IQueryable<UserEntitie> ReadDataSearch()
@@ -174,7 +175,7 @@ namespace WpfApp1
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             int p = (page ?? 0);
-            if ((page ?? 0) >= totalPage) return;
+            if ((page ?? 0) >= totalPage-1) return;
             page = ++p;
             var query = ReadDataSearch();
             InitDataGrid(query);
